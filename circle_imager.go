@@ -24,7 +24,7 @@ func (ci *CircleImager) diameter() int {
 	h := rect.Dy()
 	shorter, longer := w, h
 	if w > h {
-		shorter, longer = w, h
+		shorter, longer = h, w
 	}
 	diameter := shorter
 	switch ci.Mode {
@@ -49,6 +49,7 @@ func (ci *CircleImager) Bounds() image.Rectangle {
 	diameter := ci.diameter()
 
 	point := image.Point{int((w - diameter) / 2), int((h - diameter) / 2)}
+	fmt.Println(image.Rect(point.X, point.Y, point.X+diameter, point.Y+diameter))
 	return image.Rect(point.X, point.Y, point.X+diameter, point.Y+diameter)
 }
 
@@ -59,11 +60,13 @@ func (ci *CircleImager) At(x, y int) color.Color {
 	diameter := ci.diameter()
 
 	distance := math.Sqrt(float64((x-w/2)*(x-w/2) + (y-h/2)*(y-h/2)))
-	fmt.Println(x, y)
-	if distance <= float64(diameter) {
-		return ci.img.At(x, y)
+	if distance <= float64(diameter)/2 {
+		if rect.Min.X > x || rect.Min.Y > y || rect.Max.X < x || rect.Max.Y < y {
+			return color.White
+		} else {
+			return ci.img.At(x, y)
+		}
 	} else {
-		fmt.Println("black")
-		return color.Black
+		return ci.img.At(-1, -1)
 	}
 }
