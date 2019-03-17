@@ -1,7 +1,6 @@
 package imager
 
 import (
-	"fmt"
 	"image"
 	"image/color"
 	"math"
@@ -15,7 +14,7 @@ var CircleShorter CircleMode = 2
 
 type CircleImager struct {
 	*Imager
-	Mode CircleMode
+	mode CircleMode
 }
 
 func (ci *CircleImager) diameter() int {
@@ -27,7 +26,7 @@ func (ci *CircleImager) diameter() int {
 		shorter, longer = h, w
 	}
 	diameter := shorter
-	switch ci.Mode {
+	switch ci.mode {
 	case CircleOuter:
 		diameter = int(math.Sqrt(float64(w*w + h*h)))
 	case CircleShorter:
@@ -49,7 +48,6 @@ func (ci *CircleImager) Bounds() image.Rectangle {
 	diameter := ci.diameter()
 
 	point := image.Point{int((w - diameter) / 2), int((h - diameter) / 2)}
-	fmt.Println(image.Rect(point.X, point.Y, point.X+diameter, point.Y+diameter))
 	return image.Rect(point.X, point.Y, point.X+diameter, point.Y+diameter)
 }
 
@@ -61,10 +59,10 @@ func (ci *CircleImager) At(x, y int) color.Color {
 
 	distance := math.Sqrt(float64((x-w/2)*(x-w/2) + (y-h/2)*(y-h/2)))
 	if distance <= float64(diameter)/2 {
-		if rect.Min.X > x || rect.Min.Y > y || rect.Max.X < x || rect.Max.Y < y {
-			return color.White
-		} else {
+		if inRect(rect, x, y) {
 			return ci.img.At(x, y)
+		} else {
+			return color.White
 		}
 	} else {
 		return ci.img.At(-1, -1)

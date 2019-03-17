@@ -19,13 +19,19 @@ func doTest(name string, creater func(img image.Image) image.Image) {
 }
 
 func TestImager(t *testing.T) {
-	doTest("Imager", func(image image.Image) image.Image {
-		return New(image)
+	doTest("Imager", func(img image.Image) image.Image {
+		return New(img)
 	})
 }
 
 func TestCircleImager(t *testing.T) {
-	doTest("CircleImager", func(image image.Image) image.Image {
-		return New(image).Circle(CircleShorter)
+	doTest("CircleImager", func(img image.Image) image.Image {
+		return New(img).Circle(CircleShorter)
+	})
+}
+
+func TestCropImager(t *testing.T) {
+	doTest("CropImager", func(img image.Image) image.Image {
+		return New(img).Crop(image.Rect(50, 50, 150, 100))
 	})
 }

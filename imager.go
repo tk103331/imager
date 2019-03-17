@@ -12,7 +12,11 @@ func New(image image.Image) *Imager {
 }
 
 func (i *Imager) Circle(mode CircleMode) *CircleImager {
-	return &CircleImager{Imager: i, Mode: mode}
+	return &CircleImager{Imager: i, mode: mode}
+}
+
+func (i *Imager) Crop(rect image.Rectangle) *CropImager {
+	return &CropImager{Imager: i, rect: rect}
 }
 
 func (i *Imager) ColorModel() color.Model {
