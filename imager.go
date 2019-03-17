@@ -19,6 +19,10 @@ func (i *Imager) Crop(rect image.Rectangle) *CropImager {
 	return &CropImager{Imager: i, rect: rect}
 }
 
+func (i *Imager) Flip(mode FlipMode) *FlipImager {
+	return &FlipImager{Imager: i, mode: mode}
+}
+
 func (i *Imager) ColorModel() color.Model {
 	return i.img.ColorModel()
 }

@@ -35,3 +35,9 @@ func TestCropImager(t *testing.T) {
 		return New(img).Crop(image.Rect(50, 50, 150, 100))
 	})
 }
+
+func TestFlipImager(t *testing.T) {
+	doTest("FlipImager", func(img image.Image) image.Image {
+		return New(img).Flip(FlipHorizontal)
+	})
+}
