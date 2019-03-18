@@ -31,6 +31,10 @@ func (iw *ImagerWrapper) Flip(mode FlipMode) *ImagerWrapper {
 	return &ImagerWrapper{imager: &FlipImager{img: iw.imager, mode: mode}}
 }
 
+func (iw *ImagerWrapper) Scale(scale float64) *ImagerWrapper {
+	return &ImagerWrapper{imager: &ScaleImager{img: iw.imager, scale: scale}}
+}
+
 func (iw *ImagerWrapper) ColorModel() color.Model {
 	return iw.imager.ColorModel()
 }
