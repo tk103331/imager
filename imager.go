@@ -1,36 +1,44 @@
 package imager
 
-import "image"
+import (
+	"image"
+)
 import "image/color"
 
-type Imager struct {
-	img image.Image
+type ImagerWrapper struct {
+	imager Imager
 }
 
-func New(image image.Image) *Imager {
-	return &Imager{image}
+type Imager interface {
+	ColorModel() color.Model
+	Bounds() image.Rectangle
+	At(x, y int) color.Color
 }
 
-func (i *Imager) Circle(mode CircleMode) *CircleImager {
-	return &CircleImager{Imager: i, mode: mode}
+func New(img image.Image) *ImagerWrapper {
+	return &ImagerWrapper{imager: &NopImager{img}}
 }
 
-func (i *Imager) Crop(rect image.Rectangle) *CropImager {
-	return &CropImager{Imager: i, rect: rect}
+func (iw *ImagerWrapper) Circle(mode CircleMode) *ImagerWrapper {
+	return &ImagerWrapper{imager: &CircleImager{img: iw.imager, mode: mode}}
 }
 
-func (i *Imager) Flip(mode FlipMode) *FlipImager {
-	return &FlipImager{Imager: i, mode: mode}
+func (iw *ImagerWrapper) Crop(rect image.Rectangle) *ImagerWrapper {
+	return &ImagerWrapper{imager: &CropImager{img: iw.imager, rect: rect}}
 }
 
-func (i *Imager) ColorModel() color.Model {
-	return i.img.ColorModel()
+func (iw *ImagerWrapper) Flip(mode FlipMode) *ImagerWrapper {
+	return &ImagerWrapper{imager: &FlipImager{img: iw.imager, mode: mode}}
 }
 
-func (i *Imager) Bounds() image.Rectangle {
-	return i.img.Bounds()
+func (iw *ImagerWrapper) ColorModel() color.Model {
+	return iw.imager.ColorModel()
 }
 
-func (i *Imager) At(x, y int) color.Color {
-	return i.img.At(x, y)
+func (iw *ImagerWrapper) Bounds() image.Rectangle {
+	return iw.imager.Bounds()
+}
+
+func (iw *ImagerWrapper) At(x, y int) color.Color {
+	return iw.imager.At(x, y)
 }

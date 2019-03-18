@@ -6,7 +6,7 @@ import (
 )
 
 type CropImager struct {
-	*Imager
+	img  image.Image
 	rect image.Rectangle
 }
 
@@ -15,9 +15,10 @@ func (ci *CropImager) ColorModel() color.Model {
 }
 
 func (ci *CropImager) Bounds() image.Rectangle {
-	return ci.rect
+	return image.Rect(0, 0, ci.rect.Dx()-1, ci.rect.Dy()-1)
 }
 
 func (ci *CropImager) At(x, y int) color.Color {
-	return ci.img.At(x, y)
+	min := ci.rect.Min
+	return ci.img.At(x+min.X, y+min.Y)
 }

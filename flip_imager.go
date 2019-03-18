@@ -11,7 +11,7 @@ var FlipHorizontal FlipMode = 1
 var FlipVertical FlipMode = 2
 
 type FlipImager struct {
-	*Imager
+	img  image.Image
 	mode FlipMode
 }
 

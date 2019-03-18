@@ -13,7 +13,7 @@ var CircleLonger CircleMode = 1
 var CircleShorter CircleMode = 2
 
 type CircleImager struct {
-	*Imager
+	img  image.Image
 	mode CircleMode
 }
 
@@ -42,13 +42,8 @@ func (ci *CircleImager) ColorModel() color.Model {
 }
 
 func (ci *CircleImager) Bounds() image.Rectangle {
-	rect := ci.img.Bounds()
-	w := rect.Dx()
-	h := rect.Dy()
 	diameter := ci.diameter()
-
-	point := image.Point{int((w - diameter) / 2), int((h - diameter) / 2)}
-	return image.Rect(point.X, point.Y, point.X+diameter, point.Y+diameter)
+	return image.Rect(0, 0, diameter, diameter)
 }
 
 func (ci *CircleImager) At(x, y int) color.Color {
@@ -56,6 +51,9 @@ func (ci *CircleImager) At(x, y int) color.Color {
 	w := rect.Dx()
 	h := rect.Dy()
 	diameter := ci.diameter()
+
+	x = x + (w-diameter)/2
+	y = y + (h-diameter)/2
 
 	distance := math.Sqrt(float64((x-w/2)*(x-w/2) + (y-h/2)*(y-h/2)))
 	if distance <= float64(diameter)/2 {
@@ -65,6 +63,6 @@ func (ci *CircleImager) At(x, y int) color.Color {
 			return color.White
 		}
 	} else {
-		return ci.img.At(-1, -1)
+		return color.RGBA{0, 0, 0, 0}
 	}
 }
