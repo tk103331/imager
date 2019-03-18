@@ -35,6 +35,10 @@ func (iw *ImagerWrapper) Scale(scale float64) *ImagerWrapper {
 	return &ImagerWrapper{imager: &ScaleImager{img: iw.imager, scale: scale}}
 }
 
+func (iw *ImagerWrapper) Round(radius int) *ImagerWrapper {
+	return &ImagerWrapper{imager: &RoundImager{img: iw.imager, radius: radius}}
+}
+
 func (iw *ImagerWrapper) ColorModel() color.Model {
 	return iw.imager.ColorModel()
 }
