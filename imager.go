@@ -43,6 +43,10 @@ func (iw *ImagerWrapper) Blur(level int) *ImagerWrapper {
 	return &ImagerWrapper{imager: &BlurImager{img: iw.imager, level: level}}
 }
 
+func (iw *ImagerWrapper) Sharp() *ImagerWrapper {
+	return &ImagerWrapper{imager: &SharpImager{img: iw.imager}}
+}
+
 func (iw *ImagerWrapper) ColorModel() color.Model {
 	return iw.imager.ColorModel()
 }
