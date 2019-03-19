@@ -39,6 +39,10 @@ func (iw *ImagerWrapper) Round(radius int) *ImagerWrapper {
 	return &ImagerWrapper{imager: &RoundImager{img: iw.imager, radius: radius}}
 }
 
+func (iw *ImagerWrapper) Blur(level int) *ImagerWrapper {
+	return &ImagerWrapper{imager: &BlurImager{img: iw.imager, level: level}}
+}
+
 func (iw *ImagerWrapper) ColorModel() color.Model {
 	return iw.imager.ColorModel()
 }

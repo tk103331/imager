@@ -54,6 +54,12 @@ func TestRoundImager(t *testing.T) {
 	})
 }
 
+func TestBlurImager(t *testing.T) {
+	doTest("BlurImager", func(img image.Image) image.Image {
+		return New(img).Blur(1)
+	})
+}
+
 func TestCropFlipCircle(t *testing.T) {
 	doTest("CropFlipCircle", func(img image.Image) image.Image {
 		return New(img).Crop(image.Rect(75, 50, 225, 150)).Circle(CircleOuter).Flip(FlipHorizontal)
