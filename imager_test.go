@@ -50,13 +50,13 @@ func TestScaleImager(t *testing.T) {
 
 func TestRoundImager(t *testing.T) {
 	doTest("RoundImager", func(img image.Image) image.Image {
-		return New(img).Round(150)
+		return New(img).Round(50)
 	})
 }
 
 func TestBlurImager(t *testing.T) {
 	doTest("BlurImager", func(img image.Image) image.Image {
-		return New(img).Blur(1)
+		return New(img).Blur(3)
 	})
 }
 

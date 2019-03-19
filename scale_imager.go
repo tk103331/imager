@@ -3,7 +3,6 @@ package imager
 import (
 	"image"
 	"image/color"
-	"math"
 )
 
 type ScaleImager struct {
@@ -18,9 +17,18 @@ func (si *ScaleImager) ColorModel() color.Model {
 
 func (si *ScaleImager) Bounds() image.Rectangle {
 	rect := si.img.Bounds()
-	return image.Rect(0, 0, int(math.Round(float64(rect.Dx())*si.scale)), int(math.Round(float64(rect.Dy())*si.scale)))
+	return image.Rect(0, 0, int(round(float64(rect.Dx())*si.scale)), int(round(float64(rect.Dy())*si.scale)))
 }
 
 func (si *ScaleImager) At(x, y int) color.Color {
-	return si.img.At(int(math.Round(float64(x)/si.scale)), int(math.Round(float64(y)/si.scale)))
+	rect := si.img.Bounds()
+	x = int(round(float64(x) / si.scale))
+	if x >= rect.Dx() {
+		x = rect.Dx() - 1
+	}
+	y = int(round(float64(y) / si.scale))
+	if y >= rect.Dy() {
+		y = rect.Dy() - 1
+	}
+	return si.img.At(x, y)
 }

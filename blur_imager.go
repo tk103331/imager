@@ -20,10 +20,18 @@ func (bi *BlurImager) Bounds() image.Rectangle {
 
 func (bi *BlurImager) At(x, y int) color.Color {
 	colors := make([]color.Color, 0)
-	for i := x - bi.level; i <= x+bi.level; i++ {
-		for j := y - bi.level; j <= y+bi.level; j++ {
-
-			colors = append(colors, bi.img.At(i, j))
+	rect := bi.Bounds()
+	for i := -bi.level; i <= bi.level; i++ {
+		sx := i + x
+		if sx < 0 || sx >= rect.Dx() {
+			sx = x - i
+		}
+		for j := -bi.level; j <= bi.level; j++ {
+			sy := j + y
+			if sy < 0 || sy >= rect.Dy() {
+				sy = y - j
+			}
+			colors = append(colors, bi.img.At(sx, sy))
 		}
 	}
 	return avgColor(colors)

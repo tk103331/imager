@@ -37,3 +37,7 @@ func avgColor(colors []color.Color) color.Color {
 	count := float64(len(colors))
 	return color.RGBA{uint8(sumR / count), uint8(sumG / count), uint8(sumB / count), uint8(sumA / count)}
 }
+
+func round(value float64) float64 {
+	return math.Ceil(value + 0.5)
+}
