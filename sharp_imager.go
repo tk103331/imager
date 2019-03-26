@@ -3,6 +3,7 @@ package imager
 import (
 	"image"
 	"image/color"
+	"math"
 )
 
 var filter []int = []int{-1, -1, -1, -1, 9, -1, -1, -1, -1}
@@ -33,5 +34,15 @@ func (si *SharpImager) At(x, y int) color.Color {
 		sumA += int(a>>8) * f
 
 	}
-	return color.RGBA{uint8(sumR), uint8(sumG), uint8(sumB), uint8(sumA)}
+
+	return color.RGBA{cc(sumR), cc(sumG), cc(sumB), cc(sumA)}
+}
+
+func cc(c int) uint8 {
+	if c < 0 {
+		c = 0
+	} else if c > 255 {
+		c = 255
+	}
+	return uint8(c)
 }
