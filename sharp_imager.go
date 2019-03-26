@@ -3,7 +3,6 @@ package imager
 import (
 	"image"
 	"image/color"
-	"math"
 )
 
 var filter []int = []int{-1, -1, -1, -1, 9, -1, -1, -1, -1}

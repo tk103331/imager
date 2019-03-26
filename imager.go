@@ -47,6 +47,10 @@ func (iw *ImagerWrapper) Sharp() *ImagerWrapper {
 	return &ImagerWrapper{imager: &SharpImager{img: iw.imager}}
 }
 
+func (iw *ImagerWrapper) Rotate(radian float64) *ImagerWrapper {
+	return &ImagerWrapper{imager: &RotateImager{img: iw.imager, radian: radian}}
+}
+
 func (iw *ImagerWrapper) ColorModel() color.Model {
 	return iw.imager.ColorModel()
 }

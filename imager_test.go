@@ -66,6 +66,12 @@ func TestSharpImager(t *testing.T) {
 	})
 }
 
+func TestRotateImager(t *testing.T) {
+	doTest("RotateImager", func(img image.Image) image.Image {
+		return New(img).Rotate(3.14 / 2)
+	})
+}
+
 func TestCropFlipCircle(t *testing.T) {
 	doTest("CropFlipCircle", func(img image.Image) image.Image {
 		return New(img).Crop(image.Rect(75, 50, 225, 150)).Circle(CircleOuter).Flip(FlipHorizontal)
