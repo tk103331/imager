@@ -16,11 +16,22 @@ func (ri *RotateImager) ColorModel() color.Model {
 }
 
 func (ri *RotateImager) Bounds() image.Rectangle {
-	return ri.img.Bounds()
+	rect := ri.img.Bounds()
+
+	x1, y1 := ri.rotatePoint(rect.Min.X, rect.Min.Y, ri.radian)
+	x2, y2 := ri.rotatePoint(rect.Min.X, rect.Max.Y, ri.radian)
+	x3, y3 := ri.rotatePoint(rect.Max.X, rect.Min.Y, ri.radian)
+	x4, y4 := ri.rotatePoint(rect.Max.X, rect.Max.Y, ri.radian)
+
+	return image.Rect(min(x1, x2, x3, x4), min(y1, y2, y3, y4), max(x1, x2, x3, x4), max(y1, y2, y3, y4))
 }
 
 func (ri *RotateImager) At(x, y int) color.Color {
+	x0, y0 := ri.rotatePoint(x, y, ri.radian)
+	return ri.img.At(x0, y0)
+}
 
+func (ri *RotateImager) rotatePoint(x, y int, radian float64) (int, int) {
 	rect := ri.img.Bounds()
 
 	x0 := rect.Dx() / 2
@@ -28,25 +39,11 @@ func (ri *RotateImager) At(x, y int) color.Color {
 
 	d := distance(x, y, x0, y0)
 
-	r := math.Atan(math.Abs(float64(x-x0)) / math.Abs(float64(y-y0)))
+	r := math.Atan(float64(y-y0) / float64(x-x0))
 
-	r1 := r - ri.radian
+	r1 := r - radian
 
 	x1 := x0 - int(math.Sin(r1)*d)
 	y1 := y0 - int(math.Cos(r1)*d)
-
-	if r1 > 0 && r1 <= math.Pi/4 {
-		x1 = -1
-		y1 = -1
-	} else if r1 <= math.Pi/2 {
-		x1 = -1
-		y1 = -1
-	} else if r1 <= math.Pi*3/4 {
-		// x1 = -1
-		// y1 = -1
-	} else if r1 <= math.Pi {
-		x1 = -1
-		y1 = -1
-	}
-	return ri.img.At(x1, y1)
+	return x1, y1
 }

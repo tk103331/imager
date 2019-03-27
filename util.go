@@ -41,3 +41,27 @@ func avgColor(colors []color.Color) color.Color {
 func round(value float64) float64 {
 	return math.Ceil(value + 0.5)
 }
+
+func min(v int, o ...int) int {
+	r := v
+	if len(o) > 0 {
+		for _, x := range o {
+			if x < r {
+				r = x
+			}
+		}
+	}
+	return r
+}
+
+func max(v int, o ...int) int {
+	r := v
+	if len(o) > 0 {
+		for _, x := range o {
+			if x > r {
+				r = x
+			}
+		}
+	}
+	return r
+}
