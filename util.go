@@ -65,3 +65,10 @@ func max(v int, o ...int) int {
 	}
 	return r
 }
+
+func modRad(r float64) float64 {
+	for r >= math.Pi*2 {
+		r = r - math.Pi*2
+	}
+	return r
+}
