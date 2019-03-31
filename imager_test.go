@@ -68,7 +68,7 @@ func TestSharpImager(t *testing.T) {
 
 func TestRotateImager(t *testing.T) {
 	doTest("RotateImager", func(img image.Image) image.Image {
-		return New(img).Rotate(3.14 / 2)
+		return New(img).Rotate(3.14 / 4)
 	})
 }
 
