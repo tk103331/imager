@@ -57,7 +57,7 @@ func (ri *RotateImager) rotatePoint(x0, y0 int, x, y int, r float64) (int, int) 
 	} else {
 		r0 = math.Abs(math.Atan(float64(y-y0) / float64(x-x0)))
 		if x < x0 && y < y0 {
-			r0 = r0
+
 		} else if x > x0 && y < y0 {
 			r0 = math.Pi - r0
 		} else if x > x0 && y > y0 {
@@ -76,7 +76,7 @@ func (ri *RotateImager) rotatePoint(x0, y0 int, x, y int, r float64) (int, int) 
 	d := distance(x, y, x0, y0)
 	x1, y1 := 0, 0
 	if 0 < r1 && r1 < math.Pi/2 {
-		r1 = r1
+
 		x1 = x0 - int(math.Cos(r1)*d)
 		y1 = y0 - int(math.Sin(r1)*d)
 	} else if math.Pi/2 < r1 && r1 < math.Pi {
