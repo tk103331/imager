@@ -5,19 +5,23 @@ import (
 	"image/color"
 )
 
+// BlurImager
 type BlurImager struct {
 	img   image.Image
 	level int
 }
 
+// ColorModel
 func (bi *BlurImager) ColorModel() color.Model {
 	return bi.img.ColorModel()
 }
 
+// Bounds
 func (bi *BlurImager) Bounds() image.Rectangle {
 	return bi.img.Bounds()
 }
 
+// At
 func (bi *BlurImager) At(x, y int) color.Color {
 	colors := make([]color.Color, 0)
 	rect := bi.Bounds()

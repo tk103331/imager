@@ -5,19 +5,23 @@ import (
 	"image/color"
 )
 
+// RoundImager
 type RoundImager struct {
 	img    image.Image
 	radius int
 }
 
+// ColorModel
 func (ri *RoundImager) ColorModel() color.Model {
 	return ri.img.ColorModel()
 }
 
+// Bounds
 func (ri *RoundImager) Bounds() image.Rectangle {
 	return ri.img.Bounds()
 }
 
+// At
 func (ri *RoundImager) At(x, y int) color.Color {
 	rect := ri.Bounds()
 	w := rect.Dx()

@@ -6,15 +6,18 @@ import (
 	"math"
 )
 
+// RotateImager
 type RotateImager struct {
 	img    image.Image
 	radian float64
 }
 
+// ColorModel
 func (ri *RotateImager) ColorModel() color.Model {
 	return ri.img.ColorModel()
 }
 
+// Bounds
 func (ri *RotateImager) Bounds() image.Rectangle {
 	rect := ri.img.Bounds()
 
@@ -29,6 +32,7 @@ func (ri *RotateImager) Bounds() image.Rectangle {
 	return image.Rect(min(x1, x2, x3, x4), min(y1, y2, y3, y4), max(x1, x2, x3, x4), max(y1, y2, y3, y4))
 }
 
+// At
 func (ri *RotateImager) At(x, y int) color.Color {
 	rect := ri.img.Bounds()
 	x0 := rect.Dx() / 2

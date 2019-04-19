@@ -6,15 +6,25 @@ import (
 	"math"
 )
 
+// CircleMode
 type CircleMode int
 
+// CircleOuter
 var CircleOuter CircleMode = 0
+
+// CircleLonger
 var CircleLonger CircleMode = 1
+
+// CircleShorter
 var CircleShorter CircleMode = 2
 
+// InnerColor
 var InnerColor color.Color = color.White
+
+// OuterColor
 var OuterColor color.Color = color.RGBA{0, 0, 0, 0}
 
+// CircleImager
 type CircleImager struct {
 	img  image.Image
 	mode CircleMode
@@ -40,15 +50,18 @@ func (ci *CircleImager) diameter() int {
 	return diameter
 }
 
+// ColorModel
 func (ci *CircleImager) ColorModel() color.Model {
 	return ci.img.ColorModel()
 }
 
+// Bounds
 func (ci *CircleImager) Bounds() image.Rectangle {
 	diameter := ci.diameter()
 	return image.Rect(0, 0, diameter, diameter)
 }
 
+// At
 func (ci *CircleImager) At(x, y int) color.Color {
 	rect := ci.img.Bounds()
 	w := rect.Dx()
