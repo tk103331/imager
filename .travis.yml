@@ -1,0 +1,12 @@
+language: go
+
+go:
+  - 1.8.x
+
+sudo: false
+
+install:
+  - export GOPATH=$HOME/gopath/src/github.com/tk103331/imager
+
+script:
+  - go test
