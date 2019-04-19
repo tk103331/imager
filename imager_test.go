@@ -7,12 +7,12 @@ import (
 	"testing"
 )
 
-func doTest(name string, creater func(img image.Image) image.Image) {
+func doTest(name string, creator func(img image.Image) image.Image) {
 	oldFile, _ := os.Open("test.png")
 	defer oldFile.Close()
 	oldImg, _, _ := image.Decode(oldFile)
 
-	newImg := creater(oldImg)
+	newImg := creator(oldImg)
 	newFile, _ := os.Create(name + ".png")
 	defer newFile.Close()
 	png.Encode(newFile, newImg)
