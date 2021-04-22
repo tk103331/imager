@@ -35,20 +35,21 @@ type Filter interface {
 	Name() string
 	Do(image.Image) image.Image
 	Object() fyne.CanvasObject
-	SetParent(filters *Filters)
+	SetOnUpdate(func())
 }
 
 type BaseFilter struct {
 	parent *Filters
+	OnUpdate func()
 }
 
-func (f *BaseFilter) SetParent(p *Filters) {
-	f.parent = p
+func (f *BaseFilter) SetOnUpdate(fn func()) {
+	f.OnUpdate = fn
 }
 
 func (f *BaseFilter) Update() {
-	if f.parent != nil {
-		f.parent.Update()
+	if f.OnUpdate != nil {
+		f.OnUpdate()
 	}
 }
 
@@ -79,14 +80,12 @@ func (f *Filters) Do() image.Image {
 func (f *Filters) Add(filter Filter) {
 	f.mux.Lock()
 	defer f.mux.Unlock()
-	filter.SetParent(f)
 	if len(f.filters) > 0 {
 		f.filters = append(f.filters[:f.index], filter)
 	} else {
 		f.filters = append(f.filters, filter)
 	}
 	f.index = f.index + 1
-
 }
 
 func (f *Filters) Undo() {
@@ -95,7 +94,10 @@ func (f *Filters) Undo() {
 	if f.index >= 0 {
 		f.index = f.index - 1
 	}
-	f.Update()
+}
+
+func (f *Filters) CanUndo() bool {
+	return f.index > -1
 }
 
 func (f *Filters) Redo() {
@@ -104,7 +106,10 @@ func (f *Filters) Redo() {
 	if f.index < len(f.filters) {
 		f.index = f.index + 1
 	}
-	f.Update()
+}
+
+func (f *Filters) CanRedo() bool {
+	return f.index < len(f.filters)-1
 }
 
 func (f *Filters) Reset() {
@@ -112,13 +117,6 @@ func (f *Filters) Reset() {
 	defer f.mux.Unlock()
 	f.filters = make([]Filter, 0)
 	f.index = -1
-	f.Update()
-}
-
-func (f *Filters) Update() {
-	if f.OnUpdate != nil {
-		f.OnUpdate()
-	}
 }
 
 

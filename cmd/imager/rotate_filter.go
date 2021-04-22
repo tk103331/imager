@@ -25,7 +25,8 @@ func (f *RotateFilter) Do(i image.Image) image.Image {
 func (f *RotateFilter) Object() fyne.CanvasObject {
 	label := widget.NewLabel("Radian: ")
 	slider := widget.NewSlider(0, math.Pi)
-
+	slider.Value = f.Radian
+	slider.Resize(fyne.NewSize(200, 50))
 	slider.OnChanged = func(s float64) {
 		f.Radian = s
 		f.Update()

@@ -21,6 +21,8 @@ type Window struct {
 	win fyne.Window
 	viewer *fyne.Container
 	radio *widget.RadioGroup
+	undo *widget.Button
+	redo *widget.Button
 
 	origin image.Image
 	filters *Filters
@@ -42,7 +44,7 @@ func (w *Window) Run() {
 
 func (w *Window) initUI() {
 	buttonBox := container.NewHBox(widget.NewLabel("Filter:"))
-	toolbox := container.NewVBox(buttonBox, container.NewHBox())
+	toolbox := container.NewVBox(buttonBox, container.NewHBox(), container.NewHBox())
 
 	for n := range AllFilters {
 		func(name string){
@@ -51,9 +53,10 @@ func (w *Window) initUI() {
 					return
 				}
 				f := AllFilters[name]()
-				f.SetParent(w.filters)
+				f.SetOnUpdate(w.refreshImg)
 				w.filter = f
-				toolbox.Objects[1] = container.NewHBox(f.Object(), layout.NewSpacer(),
+				w.refreshImg()
+				toolbox.Objects[1] = container.NewHBox(f.Object(),
 					widget.NewButtonWithIcon("", theme.CancelIcon(), func() {
 						toolbox.Objects[1] = container.NewHBox()
 						w.filter = nil
@@ -63,18 +66,23 @@ func (w *Window) initUI() {
 						w.filters.Add(f)
 						w.filter = nil
 						toolbox.Objects[1] = container.NewHBox()
+						w.refreshImg()
 					}))
 			})
 			buttonBox.Add(btn)
 		}(n)
 	}
 	buttonBox.Add(layout.NewSpacer())
-	buttonBox.Add(widget.NewButtonWithIcon("", theme.ContentUndoIcon(), func() {
+	w.undo = widget.NewButtonWithIcon("", theme.ContentUndoIcon(), func() {
 		w.filters.Undo()
-	}))
-	buttonBox.Add(widget.NewButtonWithIcon("", theme.ContentRedoIcon(), func() {
+		w.refreshImg()
+	})
+	w.redo = widget.NewButtonWithIcon("", theme.ContentRedoIcon(), func() {
 		w.filters.Redo()
-	}))
+		w.refreshImg()
+	})
+	buttonBox.Add(w.undo)
+	buttonBox.Add(w.redo)
 	buttonBox.Add(widget.NewButtonWithIcon("", theme.FileImageIcon(), func() {
 		dlg := dialog.NewFileOpen(func(reader fyne.URIReadCloser, err error) {
 			if err != nil {
@@ -111,6 +119,7 @@ func (w *Window) initUI() {
 	content := container.NewBorder(toolbox, nil, nil, nil, scroll)
 
 	w.win.SetContent(content)
+	w.refreshImg()
 }
 
 func (w *Window) refreshImg() {
@@ -124,11 +133,26 @@ func (w *Window) refreshImg() {
 		imgObj.Resize(fyne.NewSize(float32(img.Bounds().Dx()), float32(img.Bounds().Dy())))
 		w.viewer.Objects[0] = imgObj
 		w.viewer.Refresh()
+
+		if w.filters.CanUndo() {
+			w.undo.Enable()
+		} else {
+			w.undo.Disable()
+		}
+		if w.filters.CanRedo() {
+			w.redo.Enable()
+		} else {
+			w.redo.Disable()
+		}
+
 	} else {
 		img := canvas.NewImageFromResource(theme.FyneLogo())
 		img.FillMode = canvas.ImageFillOriginal
 		w.viewer.Objects[0] = img
 		w.viewer.Refresh()
+
+		w.undo.Disable()
+		w.redo.Disable()
 	}
 }
 

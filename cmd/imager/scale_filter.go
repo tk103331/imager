@@ -24,7 +24,7 @@ func (f *ScaleFilter) Do(i image.Image) image.Image {
 func (f *ScaleFilter) Object() fyne.CanvasObject {
 	label := widget.NewLabel("Scale: ")
 	slider := widget.NewSlider(0, 5)
-
+	slider.Value = f.Scale
 	slider.OnChanged = func(s float64) {
 		f.Scale = s
 		f.Update()

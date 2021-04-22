@@ -24,7 +24,7 @@ func (f *BlurFilter) Do(i image.Image) image.Image {
 func (f *BlurFilter) Object() fyne.CanvasObject {
 	label := widget.NewLabel("Level: ")
 	slider := widget.NewSlider(0, 5)
-
+	slider.Value = float64(f.Level)
 	slider.OnChanged = func(s float64) {
 		f.Level = int(s)
 		f.Update()

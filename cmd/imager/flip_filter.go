@@ -32,6 +32,7 @@ func (f *FlipFilter) Object() fyne.CanvasObject {
 		}
 		f.Update()
 	})
+	radio.Selected = "Horizontal"
 	radio.Horizontal = true
 	return container.NewHBox(label, radio)
 }

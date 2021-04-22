@@ -24,7 +24,7 @@ func (f *RoundFilter) Do(i image.Image) image.Image {
 func (f *RoundFilter) Object() fyne.CanvasObject {
 	label := widget.NewLabel("Radius: ")
 	slider := widget.NewSlider(0, 50)
-
+	slider.Value = f.Radius
 	slider.OnChanged = func(v float64) {
 		f.Radius = v
 		f.Update()

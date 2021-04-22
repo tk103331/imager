@@ -35,6 +35,7 @@ func (f *CircleFilter) Object() fyne.CanvasObject {
 		}
 		f.Update()
 	})
+	radio.Selected = "Outer"
 	radio.Horizontal = true
 	return container.NewHBox(label, radio)
 }
