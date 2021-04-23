@@ -47,8 +47,6 @@ The *imager* is a simple image tool lib, For learning only.
 
 #### Rotate(radian float64)
 
-#### 
-
-###GUI Demo
+### GUI Demo
 
 ![](./imager.jpg)
