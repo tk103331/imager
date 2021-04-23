@@ -23,11 +23,11 @@ func (f *RoundFilter) Do(i image.Image) image.Image {
 
 func (f *RoundFilter) Object() fyne.CanvasObject {
 	label := widget.NewLabel("Radius: ")
-	slider := widget.NewSlider(0, 50)
+	slider := widget.NewSlider(0, 100)
 	slider.Value = f.Radius
 	slider.OnChanged = func(v float64) {
 		f.Radius = v
 		f.Update()
 	}
-	return container.NewHBox(label, slider)
+	return container.NewBorder(nil, nil, label, nil, slider)
 }

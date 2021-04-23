@@ -31,5 +31,5 @@ func (f *RotateFilter) Object() fyne.CanvasObject {
 		f.Radian = s
 		f.Update()
 	}
-	return container.NewHBox(label, slider)
+	return container.NewBorder(nil, nil, label, nil, slider)
 }

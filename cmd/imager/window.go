@@ -56,7 +56,10 @@ func (w *Window) initUI() {
 				f.SetOnUpdate(w.refreshImg)
 				w.filter = f
 				w.refreshImg()
-				toolbox.Objects[1] = container.NewHBox(f.Object(),
+
+
+
+				btns := container.NewHBox(
 					widget.NewButtonWithIcon("", theme.CancelIcon(), func() {
 						toolbox.Objects[1] = container.NewHBox()
 						w.filter = nil
@@ -68,6 +71,7 @@ func (w *Window) initUI() {
 						toolbox.Objects[1] = container.NewHBox()
 						w.refreshImg()
 					}))
+				toolbox.Objects[1] = container.NewBorder(nil, nil, nil, btns, f.Object())
 			})
 			buttonBox.Add(btn)
 		}(n)

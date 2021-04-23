@@ -29,5 +29,5 @@ func (f *ScaleFilter) Object() fyne.CanvasObject {
 		f.Scale = s
 		f.Update()
 	}
-	return container.NewHBox(label, slider)
+	return container.NewBorder(nil, nil, label, nil, slider)
 }
